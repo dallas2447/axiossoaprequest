@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soap Request - Response with Javascript</title>
+  </head>
+  <script>
+    function soapRequest() {
+      var str =
+        '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.oorsprong.org/websamples.countryinfo">' +
+        "<soapenv:Header/>" +
+        "<soapenv:Body>" +
+        "<web:FullCountryInfo>" +
+        "<web:sCountryISOCode>USA</web:sCountryISOCode>" +
+        "</web:FullCountryInfo>" +
+        "</soapenv:Body>" +
+        "</soapenv:Envelope>";
+
+      function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+          xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+          alert;
+          xhr = new XDomainRequest();
+          xhr.open(method, url);
+        } else {
+          console.log("CORS not supported");
+          alert("CORS not supported");
+          xhr = null;
+        }
+        return xhr;
+      }
+      var xhr = createCORSRequest(
+        "POST",
+        "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso"
+      );
+      if (!xhr) {
+        console.log("XHR issue");
+        return;
+      }
+
+      xhr.onload = function() {
+        var results = xhr.responseText;
+        console.log(results);
+      };
+
+      xhr.setRequestHeader("Content-Type", "text/xml");
+      xhr.send(str);
+    }
+  </script>
+  <body>
+    <input type="button" value="Soap Request" onclick="soapRequest()" />
+  </body>
+</html>

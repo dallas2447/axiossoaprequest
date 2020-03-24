@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>IKEA Soap</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+      function soap() {
+        let xmls =
+          '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+          "<soap:Body>" +
+          '<Add xmlns="http://tempuri.org/">' +
+          "<intA>25</intA>" +
+          "<intB>1</intB>" +
+          "</Add>" +
+          "</soap:Body>" +
+          "</soap:Envelope>";
+          
+          axios.post('http://www.dneonline.com/calculator.asmx?op=Add',
+           xmls,
+           {headers:
+             {'Content-Type': 'text/xml'}
+           }).then(res=>{
+             console.log(res, res.data);
+           }).catch(err=>{console.log(err)});
+      }
+    </script>
+  </head>
+  <body>
+    <form name="Demo" method="POST">
+      <input type="button" value="Soap" onclick="soap()" />
+    </form>
+  </body>
+</html>
